@@ -78,3 +78,19 @@ SELECT a.Account_type, c.Name, a.Branch_ID
 FROM Account a
 JOIN Customer c ON a.CustID = c.CustID
 GROUP BY a.Account_type, c.Name, a.Branch_ID;
+
+
+Step 3: ALTER TABLE Operations
+✔ Add column
+ALTER TABLE Customer ADD Email_Address VARCHAR(50);
+
+👉 Adds new column
+
+⚠️ Rename column (Important)
+ALTER TABLE Customer CHANGE Email_Address Email_ID VARCHAR(50);
+
+
+SELECT a.Account_type, c.Name, a.Branch_ID
+FROM Account a
+JOIN Customer c ON a.CustID = c.CustID
+GROUP BY a.Account_type, c.Name, a.Branch_ID;
