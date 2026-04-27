@@ -58,3 +58,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
+
+INSERT INTO Employee VALUES (101, 'Aditi', 10, DATE '2010-01-15', 50000, NULL, 'Developer');
+INSERT INTO Employee VALUES (102, 'Rahul', 20, DATE '2018-03-10', 40000, NULL, 'Analyst');
+INSERT INTO Employee VALUES (103, 'Sneha', 10, DATE '2022-07-20', 30000, NULL, 'Clerk');
+
+SET SERVEROUTPUT ON;
+
+SELECT * FROM Salary_Increment;
