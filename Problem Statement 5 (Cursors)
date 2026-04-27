@@ -53,3 +53,23 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Rows Updated: ' || SQL%ROWCOUNT);
 END;
 /
+
+
+INSERT INTO Products VALUES (1, 'T-Shirt', 'Apparel', 1500);
+INSERT INTO Products VALUES (2, 'Jeans', 'Apparel', 3000);
+INSERT INTO Products VALUES (3, 'Jacket', 'Apparel', 6000);
+INSERT INTO Products VALUES (4, 'Laptop', 'Electronics', 55000);
+INSERT INTO Products VALUES (5, 'Shoes', 'Apparel', 4500);
+INSERT INTO Products VALUES (6, 'Watch', 'Accessories', 7000);
+
+SELECT * FROM Products;
+
+v_min NUMBER := &min_price;
+v_max NUMBER := &max_price;
+
+SELECT * FROM Products WHERE Price > 5000;
+
+UPDATE Products
+SET Price = Price + 1000;
+
+SELECT * FROM Products;
