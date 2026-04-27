@@ -54,3 +54,16 @@ END;
 -- VARIABLE c REFCURSOR;
 -- EXEC :c := get_high_balance;
 -- PRINT c;
+
+
+INSERT INTO Account VALUES (101, 'Aditi', 60000, 5);
+INSERT INTO Account VALUES (102, 'Rahul', 40000, 3);
+INSERT INTO Account VALUES (103, 'Sneha', 80000, 7);
+INSERT INTO Account VALUES (104, 'Karan', 30000, 2);
+
+SELECT * FROM Account;
+
+
+SET SERVEROUTPUT ON;
+
+EXEC calc_interest(101, 10);
