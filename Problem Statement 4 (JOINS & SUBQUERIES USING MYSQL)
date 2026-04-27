@@ -1,0 +1,71 @@
+-- Create tables with referential integrity
+
+CREATE TABLE Locations (
+    Location_id INT PRIMARY KEY,
+    Street_address VARCHAR(100),
+    Postal_code VARCHAR(20),
+    City VARCHAR(50),
+    State VARCHAR(50),
+    Country_id VARCHAR(10)
+);
+
+CREATE TABLE Manager (
+    Manager_id INT PRIMARY KEY,
+    Manager_name VARCHAR(100)
+);
+
+CREATE TABLE Departments (
+    Department_id INT PRIMARY KEY,
+    Department_name VARCHAR(50),
+    Manager_id INT,
+    Location_id INT,
+    FOREIGN KEY (Manager_id) REFERENCES Manager(Manager_id),
+    FOREIGN KEY (Location_id) REFERENCES Locations(Location_id)
+);
+
+CREATE TABLE Employee (
+    Employee_id INT PRIMARY KEY,
+    First_name VARCHAR(50),
+    Last_name VARCHAR(50),
+    Hire_date DATE,
+    Salary DECIMAL(10,2),
+    Job_title VARCHAR(50),
+    Manager_id INT,
+    Department_id INT,
+    FOREIGN KEY (Manager_id) REFERENCES Manager(Manager_id),
+    FOREIGN KEY (Department_id) REFERENCES Departments(Department_id)
+);
+
+-- 1. Employees earning more than average salary and working in IT departments
+SELECT First_name, Last_name, Salary
+FROM Employee
+WHERE Salary > (SELECT AVG(Salary) FROM Employee)
+AND Department_id IN (
+    SELECT Department_id FROM Departments WHERE Department_name LIKE '%IT%'
+);
+
+-- 2. Employees earning same as minimum salary across departments
+SELECT First_name, Last_name, Salary
+FROM Employee
+WHERE Salary = (SELECT MIN(Salary) FROM Employee);
+
+-- 3. Employees whose salary is above average in their department
+SELECT e.Employee_id, e.First_name, e.Last_name, e.Salary
+FROM Employee e
+WHERE e.Salary > (
+    SELECT AVG(e2.Salary)
+    FROM Employee e2
+    WHERE e2.Department_id = e.Department_id
+);
+
+-- 4. Department name, manager name, and city
+SELECT d.Department_name, m.Manager_name, l.City
+FROM Departments d
+JOIN Manager m ON d.Manager_id = m.Manager_id
+JOIN Locations l ON d.Location_id = l.Location_id;
+
+-- 5. Managers with more than 15 years of experience
+SELECT e.First_name, e.Last_name, e.Hire_date, e.Salary
+FROM Employee e
+WHERE e.Job_title = 'Manager'
+AND TIMESTAMPDIFF(YEAR, e.Hire_date, CURDATE()) > 15;
