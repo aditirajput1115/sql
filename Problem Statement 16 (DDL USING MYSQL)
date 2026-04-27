@@ -1,0 +1,81 @@
+-- 1. Create tables with referential integrity
+
+CREATE TABLE Customer (
+    CustID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Cust_Address VARCHAR(100),
+    Phone_no VARCHAR(15),
+    Email_ID VARCHAR(50),
+    Age INT
+);
+
+CREATE TABLE Branch (
+    Branch_ID INT PRIMARY KEY,
+    Branch_Name VARCHAR(50),
+    Address VARCHAR(100)
+);
+
+CREATE TABLE Account (
+    Account_no INT PRIMARY KEY,
+    Branch_ID INT,
+    CustID INT,
+    open_date DATE,
+    Account_type VARCHAR(50),
+    Balance DECIMAL(10,2),
+    FOREIGN KEY (Branch_ID) REFERENCES Branch(Branch_ID),
+    FOREIGN KEY (CustID) REFERENCES Customer(CustID)
+);
+
+-- Insert sample data
+
+INSERT INTO Customer VALUES
+(101,'Amit','Mumbai','9876543210','amit@gmail.com',25),
+(102,'Neha','Delhi','9876543211','neha@gmail.com',30),
+(103,'Ravi','Nashik','9876543212','ravi@gmail.com',40);
+
+INSERT INTO Branch VALUES
+(1,'Main Branch','Pune'),
+(2,'City Branch','Mumbai');
+
+INSERT INTO Account VALUES
+(1001,1,101,'2018-08-16','Saving',50000),
+(1002,2,102,'2018-02-16','Loan',70000),
+(1003,1,103,'2018-08-16','Saving',30000);
+
+-- 2. ER Diagram (conceptual)
+-- Customer (1) ---- (M) Account (M) ---- (1) Branch
+
+-- 3. View: Saving account (open date 16-08-2018)
+CREATE VIEW Saving_Account_View AS
+SELECT c.*, a.open_date, a.Balance
+FROM Customer c
+JOIN Account a ON c.CustID = a.CustID
+WHERE a.Account_type = 'Saving'
+AND a.open_date = '2018-08-16';
+
+-- 4. Update view (updates base table)
+UPDATE Customer
+SET Cust_Address = 'Pune'
+WHERE CustID = 103;
+
+-- 5. View: Loan account (open date 16-02-2018)
+CREATE VIEW Loan_Account_View AS
+SELECT c.*, a.open_date, a.Balance
+FROM Customer c
+JOIN Account a ON c.CustID = a.CustID
+WHERE a.Account_type = 'Loan'
+AND a.open_date = '2018-02-16';
+
+-- 6. Index on Customer primary key
+CREATE INDEX idx_customer_id ON Customer(CustID);
+
+-- 7. Index on Branch primary key
+CREATE INDEX idx_branch_id ON Branch(Branch_ID);
+
+-- 8. Create sequence on Customer table
+CREATE SEQUENCE cust_seq
+START WITH 104
+INCREMENT BY 1;
+
+-- 9. Create synonym for Branch table
+CREATE SYNONYM Cust_info FOR Branch;
