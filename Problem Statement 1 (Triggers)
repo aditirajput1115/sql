@@ -42,3 +42,30 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+
+Step 1: Insert Data into Employee
+
+Run this:
+
+INSERT INTO Employee (emp_id, emp_name, salary, designation) VALUES
+(101, 'Aditi', 50000, 'Developer'),
+(102, 'Rahul', 70000, 'Manager'),
+(103, 'Sneha', 100000, 'CEO');
+
+👉 Now check:
+
+SELECT * FROM Employee;
+🔹 Step 2: Test Salary Update Trigger
+
+Update salary of an employee:
+
+UPDATE Employee
+SET salary = 60000
+WHERE emp_id = 101;
+
+👉 Now check backup table:
+
+SELECT * FROM Salary_Backup;
