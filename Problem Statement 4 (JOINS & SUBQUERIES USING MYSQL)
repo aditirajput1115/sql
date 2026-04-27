@@ -69,3 +69,26 @@ SELECT e.First_name, e.Last_name, e.Hire_date, e.Salary
 FROM Employee e
 WHERE e.Job_title = 'Manager'
 AND TIMESTAMPDIFF(YEAR, e.Hire_date, CURDATE()) > 15;
+
+
+
+
+Insert into Locations
+INSERT INTO Locations VALUES
+(1, 'MG Road', '411001', 'Pune', 'Maharashtra', 'IN'),
+(2, 'Brigade Road', '560001', 'Bangalore', 'Karnataka', 'IN');
+✅ Insert into Manager
+INSERT INTO Manager VALUES
+(1, 'Raj Mehta'),
+(2, 'Anita Sharma');
+✅ Insert into Departments
+INSERT INTO Departments VALUES
+(101, 'IT Department', 1, 1),
+(102, 'HR Department', 2, 2);
+✅ Insert into Employee
+INSERT INTO Employee VALUES
+(1, 'Aditi', 'Rajput', '2010-06-15', 70000, 'Manager', 1, 101),
+(2, 'Rahul', 'Sharma', '2018-03-20', 40000, 'Developer', 1, 101),
+(3, 'Sneha', 'Patil', '2015-07-10', 60000, 'Analyst', 2, 102),
+(4, 'Karan', 'Verma', '2005-01-01', 90000, 'Manager', 2, 102),
+(5, 'Neha', 'Joshi', '2020-09-12', 30000, 'HR', 2, 102);
