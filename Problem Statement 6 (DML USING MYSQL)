@@ -76,3 +76,6 @@ FROM Customer c
 JOIN Account a ON c.CustID = a.CustID
 WHERE a.Balance >= 20000
 ORDER BY c.Age;
+
+
+
