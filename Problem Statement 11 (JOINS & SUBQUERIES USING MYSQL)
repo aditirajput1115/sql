@@ -67,3 +67,24 @@ FROM Employee
 WHERE hire_date > (
     SELECT hire_date FROM Employee WHERE Last_name = 'Jones'
 );
+
+
+✅ Locations
+INSERT INTO Locations VALUES
+(1, 'MG Road', '411001', 'Pune', 'MH', 'IN'),
+(2, '5th Avenue', '10001', 'New York', 'NY', 'US');
+✅ Managers
+INSERT INTO Manager VALUES
+(1, 'Raj Mehta'),
+(2, 'John Smith');
+✅ Departments
+INSERT INTO Departments VALUES
+(101, 'IT', 1, 1),
+(102, 'HR', 2, 2);
+✅ Employees
+INSERT INTO Employee VALUES
+(1, 'Aditi', 'Singh', '2020-01-15', 50000, 'Developer', 1, 101),
+(2, 'Rahul', 'Sharma', '2019-03-10', 60000, 'Analyst', 1, 101),
+(3, 'Sneha', 'Jones', '2018-07-20', 55000, 'Manager', 2, 102),
+(4, 'Karan', 'Verma', '2021-05-25', 70000, 'Developer', 2, 102),
+(5, 'Neha', 'Patil', '2022-09-12', 45000, 'HR', NULL, 102);
