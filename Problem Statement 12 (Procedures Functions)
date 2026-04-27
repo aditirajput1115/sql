@@ -1,0 +1,65 @@
+-- Table creation
+CREATE TABLE Employee (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    dept_id NUMBER,
+    DoJ DATE,
+    salary NUMBER,
+    commission NUMBER,
+    job_title VARCHAR2(50)
+);
+
+CREATE TABLE Departments (
+    dept_id NUMBER PRIMARY KEY,
+    dept_name VARCHAR2(50),
+    manager_name VARCHAR2(50)
+);
+
+-- 1. Procedure to calculate commission
+CREATE OR REPLACE PROCEDURE calc_commission
+IS
+    v_exp NUMBER;
+BEGIN
+    FOR rec IN (SELECT emp_id, salary, DoJ FROM Employee) LOOP
+        v_exp := FLOOR(MONTHS_BETWEEN(SYSDATE, rec.DoJ)/12);
+
+        IF rec.salary > 10000 THEN
+            UPDATE Employee
+            SET commission = rec.salary * 0.004
+            WHERE emp_id = rec.emp_id;
+
+        ELSIF rec.salary < 10000 AND v_exp > 10 THEN
+            UPDATE Employee
+            SET commission = rec.salary * 0.0035
+            WHERE emp_id = rec.emp_id;
+
+        ELSIF rec.salary < 3000 THEN
+            UPDATE Employee
+            SET commission = rec.salary * 0.0025
+            WHERE emp_id = rec.emp_id;
+
+        ELSE
+            UPDATE Employee
+            SET commission = rec.salary * 0.0015
+            WHERE emp_id = rec.emp_id;
+        END IF;
+    END LOOP;
+END;
+/
+
+-- 2. Function to return manager name using dept_id
+CREATE OR REPLACE FUNCTION get_manager_name(p_dept_id NUMBER)
+RETURN VARCHAR2
+IS
+    v_manager VARCHAR2(50);
+BEGIN
+    SELECT manager_name INTO v_manager
+    FROM Departments
+    WHERE dept_id = p_dept_id;
+
+    RETURN v_manager;
+END;
+/
+
+-- Example call
+-- SELECT get_manager_name(101) FROM dual;
