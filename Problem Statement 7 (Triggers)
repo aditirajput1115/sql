@@ -39,3 +39,52 @@ BEGIN
     END IF;
 END;
 /
+
+
+Step 1: Insert Data into Employee (Required Input)
+INSERT INTO Employee VALUES (101, 'Aditi', 10, DATE '2020-01-15', 50000, 5000, 'Developer');
+INSERT INTO Employee VALUES (102, 'Rahul', 20, DATE '2018-03-10', 60000, 6000, 'Manager');
+INSERT INTO Employee VALUES (103, 'Sneha', 10, DATE '2019-07-20', 45000, 4000, 'Analyst');
+
+👉 Check:
+
+SELECT * FROM Employee;
+🔹 Step 2: Test Trigger 1 (Prevent Salary Decrease)
+❌ Try decreasing salary:
+UPDATE Employee
+SET salary = 40000
+WHERE emp_id = 101;
+🚫 Output:
+ERROR: Salary cannot be decreased
+
+✔ Trigger works — update is blocked
+
+✅ Try increasing salary:
+UPDATE Employee
+SET salary = 55000
+WHERE emp_id = 101;
+
+✔ This will work successfully
+
+🔹 Step 3: Test Trigger 2 (Job Title Change History)
+✅ Change job title:
+UPDATE Employee
+SET job_title = 'Senior Developer'
+WHERE emp_id = 101;
+
+✔ Trigger fires and inserts record into job_history
+
+👉 Check:
+
+SELECT * FROM job_history;
+✅ Expected Output:
+emp_id	old_job_title	old_dept_id	start_date	end_date
+101	Developer	10	15-JAN-20	(current date)
+🔹 Step 4: Update Without Changing Job Title
+UPDATE Employee
+SET salary = 58000
+WHERE emp_id = 101;
+
+👉 Check:
+
+SELECT * FROM job_history;
