@@ -1,0 +1,80 @@
+-- Create tables
+
+CREATE TABLE Customer (
+    CustID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Cust_Address VARCHAR(100),
+    Phone_no VARCHAR(15),
+    Age INT
+);
+
+CREATE TABLE Branch (
+    Branch_ID INT PRIMARY KEY,
+    Branch_Name VARCHAR(50),
+    Address VARCHAR(100)
+);
+
+CREATE TABLE Account (
+    Account_no INT PRIMARY KEY,
+    Branch_ID INT,
+    CustID INT,
+    date_open DATE,
+    Account_type VARCHAR(50),
+    Balance DECIMAL(10,2),
+    FOREIGN KEY (Branch_ID) REFERENCES Branch(Branch_ID),
+    FOREIGN KEY (CustID) REFERENCES Customer(CustID)
+);
+
+-- Insert sample data
+
+INSERT INTO Customer VALUES
+(1,'Amit','Pune','9876543210',40),
+(2,'Neha','Mumbai','9876543211',30),
+(3,'Ravi','Pune','9876543212',45),
+(4,'Riya','Nashik','9876543213',25);
+
+INSERT INTO Branch VALUES
+(101,'Main Branch','Pune'),
+(102,'City Branch','Mumbai');
+
+INSERT INTO Account VALUES
+(1001,101,1,'2020-01-10','Saving Account',90000),
+(1002,102,2,'2021-03-15','Current Account',30000),
+(1003,101,3,'2019-07-20','Saving Account',20000),
+(1004,102,4,'2022-11-25','Saving Account',50000);
+
+-- 1. Add column Email_Address
+ALTER TABLE Customer ADD Email_Address VARCHAR(50);
+
+-- 2. Rename Email_Address to Email_ID
+ALTER TABLE Customer CHANGE Email_Address Email_ID VARCHAR(50);
+
+-- 3. Customer details with highest balance
+SELECT c.*
+FROM Customer c
+JOIN Account a ON c.CustID = a.CustID
+WHERE a.Balance = (SELECT MAX(Balance) FROM Account);
+
+-- 4. Customer with lowest balance (Saving Account)
+SELECT c.*
+FROM Customer c
+JOIN Account a ON c.CustID = a.CustID
+WHERE a.Account_type = 'Saving Account'
+AND a.Balance = (
+    SELECT MIN(Balance) FROM Account WHERE Account_type='Saving Account'
+);
+
+-- 5. Customers in Pune with age > 35
+SELECT * FROM Customer
+WHERE Cust_Address = 'Pune' AND Age > 35;
+
+-- 6. CustID, Name, Age in ascending order of Age
+SELECT CustID, Name, Age
+FROM Customer
+ORDER BY Age ASC;
+
+-- 7. Name and Branch_ID grouped by Account_type
+SELECT a.Account_type, c.Name, a.Branch_ID
+FROM Account a
+JOIN Customer c ON a.CustID = c.CustID
+GROUP BY a.Account_type, c.Name, a.Branch_ID;
