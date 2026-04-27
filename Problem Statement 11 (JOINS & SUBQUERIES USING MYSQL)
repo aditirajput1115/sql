@@ -1,0 +1,69 @@
+-- Create tables with referential integrity
+
+CREATE TABLE Locations (
+    location_id INT PRIMARY KEY,
+    street_address VARCHAR(100),
+    postal_code VARCHAR(20),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    country_id VARCHAR(10)
+);
+
+CREATE TABLE Manager (
+    Manager_id INT PRIMARY KEY,
+    Manager_name VARCHAR(100)
+);
+
+CREATE TABLE Departments (
+    Department_id INT PRIMARY KEY,
+    Department_name VARCHAR(50),
+    Manager_id INT,
+    Location_id INT,
+    FOREIGN KEY (Manager_id) REFERENCES Manager(Manager_id),
+    FOREIGN KEY (Location_id) REFERENCES Locations(location_id)
+);
+
+CREATE TABLE Employee (
+    Employee_id INT PRIMARY KEY,
+    First_name VARCHAR(50),
+    Last_name VARCHAR(50),
+    hire_date DATE,
+    salary DECIMAL(10,2),
+    Job_title VARCHAR(50),
+    manager_id INT,
+    department_id INT,
+    FOREIGN KEY (manager_id) REFERENCES Manager(Manager_id),
+    FOREIGN KEY (department_id) REFERENCES Departments(Department_id)
+);
+
+-- 1. Employees with salary higher than employee 'Singh'
+SELECT First_name, Last_name, salary
+FROM Employee
+WHERE salary > (
+    SELECT salary FROM Employee WHERE Last_name = 'Singh'
+);
+
+-- 2. Employees who have a manager and work in US-based department
+SELECT e.First_name, e.Last_name
+FROM Employee e
+JOIN Departments d ON e.department_id = d.Department_id
+JOIN Locations l ON d.Location_id = l.location_id
+WHERE e.manager_id IS NOT NULL
+AND l.country_id = 'US';
+
+-- 3. Employees with salary greater than average salary
+SELECT First_name, Last_name, salary
+FROM Employee
+WHERE salary > (SELECT AVG(salary) FROM Employee);
+
+-- 4. Employee id, last name, manager id, manager name
+SELECT e.Employee_id, e.Last_name, e.manager_id, m.Manager_name
+FROM Employee e
+JOIN Manager m ON e.manager_id = m.Manager_id;
+
+-- 5. Employees hired after 'Jones'
+SELECT First_name, Last_name, hire_date
+FROM Employee
+WHERE hire_date > (
+    SELECT hire_date FROM Employee WHERE Last_name = 'Jones'
+);
