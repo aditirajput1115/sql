@@ -53,3 +53,15 @@ BEGIN
     CLOSE c2;
 END;
 /
+
+
+INSERT INTO Employee VALUES (101, 'Aditi', 60000);
+INSERT INTO Employee VALUES (102, 'Rahul', 40000);
+INSERT INTO Employee VALUES (103, 'Sneha', 80000);
+INSERT INTO Employee VALUES (104, 'Karan', 30000);
+
+SELECT * FROM Employee;
+
+SET SERVEROUTPUT ON;
+
+v_id NUMBER := &emp_id;
