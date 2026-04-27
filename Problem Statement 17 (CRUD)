@@ -1,0 +1,43 @@
+// Create Collection
+db.createCollection("Student")
+
+// Insert 10 documents
+db.Student.insertMany([
+{Roll_No:"A1", Name:"Amit", Class:"TE", Marks:85, Address:"Pune", Enrolled_Courses:["DBMS","TOC"]},
+{Roll_No:"A2", Name:"Neha", Class:"SE", Marks:60, Address:"Mumbai", Enrolled_Courses:["CN","DBMS"]},
+{Roll_No:"A3", Name:"Raj", Class:"TE", Marks:90, Address:"Nashik", Enrolled_Courses:["TOC","OS"]},
+{Roll_No:"A4", Name:"Simran", Class:"FE", Marks:45, Address:"Pune", Enrolled_Courses:["DBMS"]},
+{Roll_No:"A5", Name:"Karan", Class:"SE", Marks:30, Address:"Nagpur", Enrolled_Courses:["TOC"]},
+{Roll_No:"A6", Name:"Pooja", Class:"TE", Marks:95, Address:"Pune", Enrolled_Courses:["DBMS","TOC","CN"]},
+{Roll_No:"A7", Name:"Ravi", Class:"FE", Marks:20, Address:"Mumbai", Enrolled_Courses:["CN"]},
+{Roll_No:"A8", Name:"Sneha", Class:"SE", Marks:75, Address:"Pune", Enrolled_Courses:["DBMS","TOC"]},
+{Roll_No:"A9", Name:"Anil", Class:"TE", Marks:55, Address:"Nashik", Enrolled_Courses:["OS"]},
+{Roll_No:"A10", Name:"Meena", Class:"FE", Marks:65, Address:"Pune", Enrolled_Courses:["DBMS"]}
+])
+
+// 1. Students enrolled in DBMS and TOC
+db.Student.find({Enrolled_Courses: {$all: ["DBMS","TOC"]}}, {Name:1, _id:0})
+
+// 2. Roll_No and Class where marks > 50 OR Class = TE
+db.Student.find(
+  {$or: [{Marks: {$gt: 50}}, {Class: "TE"}]},
+  {Roll_No:1, Class:1, _id:0}
+)
+
+// 3. Update entire record of Roll_No A10
+db.Student.replaceOne(
+  {Roll_No: "A10"},
+  {Roll_No:"A10", Name:"Updated", Class:"TE", Marks:80, Address:"Mumbai", Enrolled_Courses:["DBMS","CN"]}
+)
+
+// 4. Names of students with 3rd and 4th highest marks
+db.Student.find({}, {Name:1, Marks:1, _id:0})
+.sort({Marks:-1})
+.skip(2)
+.limit(2)
+
+// 5. Delete students with marks < 20
+db.Student.deleteMany({Marks: {$lt: 20}})
+
+// 6. Delete first record from collection
+db.Student.deleteOne({})
