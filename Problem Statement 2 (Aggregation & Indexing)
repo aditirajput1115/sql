@@ -1,0 +1,52 @@
+// Create Collection
+db.createCollection("Movies_Data")
+
+// Insert sample documents
+db.Movies_Data.insertMany([
+{Movie_ID:1, Movie_Name:"MovieA", Director:"Raj", Genre:"Action", BoxOfficeCollection:100},
+{Movie_ID:2, Movie_Name:"MovieB", Director:"Raj", Genre:"Drama", BoxOfficeCollection:150},
+{Movie_ID:3, Movie_Name:"MovieC", Director:"Amit", Genre:"Action", BoxOfficeCollection:200},
+{Movie_ID:4, Movie_Name:"MovieD", Director:"Amit", Genre:"Drama", BoxOfficeCollection:120},
+{Movie_ID:5, Movie_Name:"MovieE", Director:"Neha", Genre:"Comedy", BoxOfficeCollection:180},
+{Movie_ID:6, Movie_Name:"MovieF", Director:"Neha", Genre:"Action", BoxOfficeCollection:220},
+{Movie_ID:7, Movie_Name:"MovieG", Director:"Raj", Genre:"Comedy", BoxOfficeCollection:90},
+{Movie_ID:8, Movie_Name:"MovieH", Director:"Amit", Genre:"Comedy", BoxOfficeCollection:300}
+])
+
+// 1. Count movies by each Director
+db.Movies_Data.aggregate([
+  {$group: {_id: "$Director", totalMovies: {$sum: 1}}}
+])
+
+// 2. Highest BoxOfficeCollection in each Genre
+db.Movies_Data.aggregate([
+  {$sort: {Genre:1, BoxOfficeCollection:-1}},
+  {$group: {
+    _id: "$Genre",
+    Movie_Name: {$first: "$Movie_Name"},
+    BoxOfficeCollection: {$first: "$BoxOfficeCollection"}
+  }}
+])
+
+// 3. Highest BoxOfficeCollection in each Genre (ascending order)
+db.Movies_Data.aggregate([
+  {$sort: {Genre:1, BoxOfficeCollection:-1}},
+  {$group: {
+    _id: "$Genre",
+    Movie_Name: {$first: "$Movie_Name"},
+    BoxOfficeCollection: {$first: "$BoxOfficeCollection"}
+  }},
+  {$sort: {BoxOfficeCollection: 1}}
+])
+
+// 4. Create index on Movie_ID
+db.Movies_Data.createIndex({Movie_ID: 1})
+
+// 5. Create index on Movie_Name and Director
+db.Movies_Data.createIndex({Movie_Name: 1, Director: 1})
+
+// 6. Drop index on Movie_ID
+db.Movies_Data.dropIndex({Movie_ID: 1})
+
+// 7. Drop index on Movie_Name and Director
+db.Movies_Data.dropIndex({Movie_Name: 1, Director: 1})
