@@ -67,3 +67,9 @@ SELECT * FROM Account;
 SET SERVEROUTPUT ON;
 
 EXEC calc_interest(101, 10);
+
+VARIABLE c REFCURSOR;
+
+EXEC :c := get_high_balance;
+
+PRINT c;
