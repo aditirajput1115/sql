@@ -63,3 +63,20 @@ END;
 
 -- Example call
 -- SELECT get_manager_name(101) FROM dual;
+
+
+✅ Departments
+INSERT INTO Departments VALUES (101, 'IT', 'Raj Mehta');
+INSERT INTO Departments VALUES (102, 'HR', 'Anita Sharma');
+✅ Employee
+INSERT INTO Employee VALUES (1, 'Aditi', 101, DATE '2010-01-15', 15000, NULL, 'Developer');
+INSERT INTO Employee VALUES (2, 'Rahul', 101, DATE '2008-03-10', 9000, NULL, 'Analyst');
+INSERT INTO Employee VALUES (3, 'Sneha', 102, DATE '2020-07-20', 2500, NULL, 'Clerk');
+INSERT INTO Employee VALUES (4, 'Karan', 102, DATE '2015-05-25', 7000, NULL, 'Executive');
+
+Step 2: Run Procedure
+SET SERVEROUTPUT ON;
+
+EXEC calc_commission;
+
+SELECT get_manager_name(101) FROM dual;
