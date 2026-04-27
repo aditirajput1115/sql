@@ -69,3 +69,35 @@ WHERE emp_id = 101;
 👉 Now check backup table:
 
 SELECT * FROM Salary_Backup;
+
+Step 3: Update Without Changing Salary (No Trigger)
+UPDATE Employee
+SET emp_name = 'Aditi Sharma'
+WHERE emp_id = 101;
+
+👉 Check again:
+
+SELECT * FROM Salary_Backup;
+
+✔️ No new row added (because salary didn’t change)
+
+🔹 Step 4: Test CEO Delete Restriction
+
+Try deleting CEO:
+
+DELETE FROM Employee
+WHERE emp_id = 103;
+❌ You will get error:
+Cannot delete CEO record
+
+✔️ Trigger worked successfully
+
+🔹 Step 5: Delete Normal Employee
+DELETE FROM Employee
+WHERE emp_id = 102;
+
+👉 This will work normally.
+
+🔹 Final Tables Check
+SELECT * FROM Employee;
+SELECT * FROM Salary_Backup;
