@@ -1,0 +1,66 @@
+-- 1. Create tables with referential integrity
+
+CREATE TABLE Customer (
+    CustID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Cust_Address VARCHAR(100),
+    Phone_no VARCHAR(15),
+    Email_ID VARCHAR(50),
+    Age INT
+);
+
+CREATE TABLE Branch (
+    Branch_ID INT PRIMARY KEY,
+    Branch_Name VARCHAR(50),
+    Address VARCHAR(100)
+);
+
+CREATE TABLE Account (
+    Account_no INT PRIMARY KEY,
+    Branch_ID INT,
+    CustID INT,
+    date_open DATE,
+    Account_type VARCHAR(50),
+    Balance DECIMAL(10,2),
+    FOREIGN KEY (Branch_ID) REFERENCES Branch(Branch_ID),
+    FOREIGN KEY (CustID) REFERENCES Customer(CustID)
+);
+
+-- Insert sample data
+
+INSERT INTO Customer VALUES
+(1,'Amit','Pune','9876543210','amit@gmail.com',25),
+(2,'Neha','Mumbai','9876543211','neha@gmail.com',30),
+(3,'Ravi','Nashik','9876543212','ravi@gmail.com',50);
+
+INSERT INTO Branch VALUES
+(101,'Main Branch','Pune'),
+(102,'City Branch','Mumbai');
+
+INSERT INTO Account VALUES
+(1001,101,1,'2017-04-10','Saving',60000),
+(1002,102,2,'2018-05-12','Current',40000),
+(1003,101,3,'2016-03-20','Saving',70000);
+
+-- 2. ER Diagram (conceptual - represented via relations)
+-- Customer (1) ---- (M) Account (M) ---- (1) Branch
+
+-- 3. Create index on primary key of Account
+CREATE INDEX idx_account_no ON Account(Account_no);
+
+-- 4. Create view for customers age < 45
+CREATE VIEW Customer_Info AS
+SELECT * FROM Customer
+WHERE Age < 45;
+
+-- 5. Update view (will reflect on base table if applicable)
+UPDATE Account
+SET date_open = '2017-04-16';
+
+-- 6. Create sequence on Branch table
+CREATE SEQUENCE branch_seq
+START WITH 103
+INCREMENT BY 1;
+
+-- 7. Create synonym for Branch table
+CREATE SYNONYM Branch_info FOR Branch;
