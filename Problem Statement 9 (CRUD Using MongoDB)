@@ -1,0 +1,41 @@
+// Create Collection
+db.createCollection("Social_Media")
+
+// Insert 20 documents
+db.Social_Media.insertMany([
+{User_Id:1, User_Name:"Amit", No_of_Posts:120, No_of_Friends:6, Friends_List:["Neha","Raj"], Interests:["Music","Sports"]},
+{User_Id:2, User_Name:"Neha", No_of_Posts:80, No_of_Friends:4, Friends_List:["Amit","Riya"], Interests:["Dance","Art"]},
+{User_Id:3, User_Name:"Raj", No_of_Posts:150, No_of_Friends:8, Friends_List:["Amit","Neha"], Interests:["Gaming","Tech"]},
+{User_Id:4, User_Name:"Riya", No_of_Posts:60, No_of_Friends:3, Friends_List:["Neha"], Interests:["Reading"]},
+{User_Id:5, User_Name:"Karan", No_of_Posts:200, No_of_Friends:10, Friends_List:["Amit","Raj"], Interests:["Fitness"]},
+{User_Id:6, User_Name:"Pooja", No_of_Posts:95, No_of_Friends:5, Friends_List:["Riya","Neha"], Interests:["Cooking"]},
+{User_Id:7, User_Name:"Ravi", No_of_Posts:130, No_of_Friends:7, Friends_List:["Amit"], Interests:["Travel"]},
+{User_Id:8, User_Name:"Sneha", No_of_Posts:110, No_of_Friends:6, Friends_List:["Pooja"], Interests:["Fashion"]},
+{User_Id:9, User_Name:"Anil", No_of_Posts:70, No_of_Friends:2, Friends_List:["Raj"], Interests:["Movies"]},
+{User_Id:10, User_Name:"Meena", No_of_Posts:140, No_of_Friends:9, Friends_List:["Amit"], Interests:["Yoga"]},
+{User_Id:11, User_Name:"Suresh", No_of_Posts:55, No_of_Friends:3, Friends_List:["Ravi"], Interests:["Music"]},
+{User_Id:12, User_Name:"Geeta", No_of_Posts:160, No_of_Friends:8, Friends_List:["Neha"], Interests:["Art"]},
+{User_Id:13, User_Name:"Vikas", No_of_Posts:90, No_of_Friends:4, Friends_List:["Karan"], Interests:["Tech"]},
+{User_Id:14, User_Name:"Priya", No_of_Posts:180, No_of_Friends:7, Friends_List:["Sneha"], Interests:["Dance"]},
+{User_Id:15, User_Name:"Rohit", No_of_Posts:125, No_of_Friends:6, Friends_List:["Anil"], Interests:["Sports"]},
+{User_Id:16, User_Name:"Nikita", No_of_Posts:85, No_of_Friends:5, Friends_List:["Priya"], Interests:["Travel"]},
+{User_Id:17, User_Name:"Arjun", No_of_Posts:210, No_of_Friends:11, Friends_List:["Rohit"], Interests:["Fitness"]},
+{User_Id:18, User_Name:"Divya", No_of_Posts:95, No_of_Friends:4, Friends_List:["Meena"], Interests:["Cooking"]},
+{User_Id:19, User_Name:"Manish", No_of_Posts:135, No_of_Friends:7, Friends_List:["Vikas"], Interests:["Gaming"]},
+{User_Id:20, User_Name:"Kavita", No_of_Posts:75, No_of_Friends:3, Friends_List:["Divya"], Interests:["Reading"]}
+])
+
+// 1. List all users (formatted)
+db.Social_Media.find().pretty()
+
+// 2. Users with posts > 100
+db.Social_Media.find({No_of_Posts: {$gt: 100}})
+
+// 3. User names and their Friends_List
+db.Social_Media.find({}, {User_Name:1, Friends_List:1, _id:0})
+
+// 4. User IDs and Friends_List with more than 5 friends
+db.Social_Media.find({No_of_Friends: {$gt: 5}}, {User_Id:1, Friends_List:1, _id:0})
+
+// 5. Users sorted by posts descending
+db.Social_Media.find().sort({No_of_Posts: -1})
